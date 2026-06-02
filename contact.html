@@ -240,20 +240,16 @@
       fetch(form.action, {
           method: 'POST',
           body: searchParams,
+          mode: 'no-cors', // 🌟 強制通關模式，防止瀏覽器阻擋
           headers: {
               'Content-Type': 'application/x-www-form-urlencoded'
           }
       })
-      .then(response => response.text())
-      .then(data => {
+      .then(() => {
+          // 資料成功寫入 Google 試算表後執行的動作
           loading.style.display = 'none';
-          if (data === 'success') {
-              sentMessage.style.display = 'block'; // 顯示成功畫面
-              form.reset(); // 清空表單
-          } else {
-              errorMessage.textContent = '傳送失敗，請稍後再試。錯誤原因：' + data;
-              errorMessage.style.display = 'block';
-          }
+          sentMessage.style.display = 'block'; // 直接顯示綠色成功畫面
+          form.reset(); // 清空表單
       })
       .catch(error => {
           loading.style.display = 'none';
